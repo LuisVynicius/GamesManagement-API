@@ -35,4 +35,7 @@ public class Game implements Serializable{
     @Column(nullable = false, updatable = false)
     private Instant date;
 
+    @Column(nullable = false)
+    private Short ageGroup;
+
 }
