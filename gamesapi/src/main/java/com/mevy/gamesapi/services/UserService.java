@@ -22,6 +22,12 @@ public class UserService {
         return users;
     }
 
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        User user = userRepository.findById(id).get();
+        return user;
+    }
+
     public User create(User user) {
         return userRepository.save(user);
     }

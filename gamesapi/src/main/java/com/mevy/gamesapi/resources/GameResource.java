@@ -33,6 +33,12 @@ public class GameResource {
         return ResponseEntity.ok().body(games);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Game> findById(@PathVariable Long id) {
+        Game game = gameService.findById(id);
+        return ResponseEntity.ok().body(game);
+    }
+
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody GameCreateDTO gameCreateDTO) {
         Game game = gameService.create(gameCreateDTO.toGame());
