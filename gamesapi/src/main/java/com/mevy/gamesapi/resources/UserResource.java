@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mevy.gamesapi.services.UserService;
 
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/user")
 public class UserResource {
     
     @Autowired

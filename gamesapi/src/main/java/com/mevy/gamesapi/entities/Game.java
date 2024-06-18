@@ -1,6 +1,7 @@
 package com.mevy.gamesapi.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import jakarta.persistence.Column;
@@ -33,6 +34,10 @@ public class Game implements Serializable{
     @Column(nullable = false, unique = true, length = 75)
     private String name;
 
+    @Column(nullable = false)
+    private Float price;
+
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false, updatable = false)
