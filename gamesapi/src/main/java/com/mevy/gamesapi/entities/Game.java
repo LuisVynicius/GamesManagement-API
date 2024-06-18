@@ -1,7 +1,6 @@
 package com.mevy.gamesapi.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
 
 import jakarta.persistence.Column;
