@@ -29,7 +29,8 @@ public class GameService {
     }
 
     public Game create(Game game) {
-        return gameRepository.save(game);
+        game = gameRepository.save(game);
+        return game;
     }
 
     public void delete(Long id) {
@@ -43,10 +44,10 @@ public class GameService {
     }
 
     private void updateData(Game game, Game newGame) {
-        game.setName((Objects.nonNull(newGame.getName())) ? newGame.getName() : game.getName());
-        game.setDescription((Objects.nonNull(newGame)) ? newGame.getDescription() : game.getDescription());
-        game.setAgeGroup((Objects.nonNull(newGame.getAgeGroup())) ? newGame.getAgeGroup() : game.getAgeGroup());
-        game.setPrice((Objects.nonNull(newGame.getPrice())) ? newGame.getPrice() : game.getPrice());
+        game.setName       ((Objects.nonNull(newGame.getName()))        ? newGame.getName()        : game.getName());
+        game.setDescription((Objects.nonNull(newGame.getDescription())) ? newGame.getDescription() : game.getDescription());
+        game.setAgeGroup   ((Objects.nonNull(newGame.getAgeGroup()))    ? newGame.getAgeGroup()    : game.getAgeGroup());
+        game.setPrice      ((Objects.nonNull(newGame.getPrice()))       ? newGame.getPrice()       : game.getPrice());
     }
 
 }

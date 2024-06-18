@@ -16,28 +16,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_user", indexes = {
-    @Index(name = "IDX_Email", columnList = "email")
+@Table(name = "tb_category", indexes = {
+    @Index(name = "IDX_cateogryName", columnList = "name")
 })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public class User implements Serializable {
+public class Category implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true, updatable = false)
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String username;
-
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true, updatable = false)
-    private String email;
+    private String name;
 
 }

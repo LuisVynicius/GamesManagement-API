@@ -20,14 +20,14 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_game", indexes = {
-    @Index(name = "IDX_Name", columnList = "name")
+    @Index(name = "IDX_GameName", columnList = "name")
 })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-public class Game implements Serializable{
+public class Game implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,5 +49,10 @@ public class Game implements Serializable{
 
     @Column(nullable = false)
     private Short ageGroup;
+
+    @Override
+    public String toString() {
+        return String.format("Objeto: %s %s %s %s %s %s", id, name, price, description, date, ageGroup);
+    }
 
 }
