@@ -18,7 +18,8 @@ public class GameService {
 
     @Transactional(readOnly = true)
     public List<Game> findAll() {
-        return gameRepository.findAll();
+        List<Game> games = gameRepository.findAll();
+        return games;
     }
 
     public Game create(Game game) {
@@ -41,6 +42,5 @@ public class GameService {
         game.setAgeGroup((Objects.nonNull(newGame.getAgeGroup())) ? newGame.getAgeGroup() : game.getAgeGroup());
         game.setPrice((Objects.nonNull(newGame.getPrice())) ? newGame.getPrice() : game.getPrice());
     }
-    
 
 }
