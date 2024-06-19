@@ -2,6 +2,8 @@ package com.mevy.gamesapi.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -11,8 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,6 @@ import lombok.Setter;
     @Index(name = "IDX_GameName", columnList = "name")
 })
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
@@ -50,9 +51,19 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private Short ageGroup;
 
-    @Override
-    public String toString() {
-        return String.format("Objeto: %s %s %s %s %s %s", id, name, price, description, date, ageGroup);
+    @ManyToMany(mappedBy = "games")
+    private Set<User> users = new HashSet<>();
+
+    @ManyToMany
+    private Set<Category> categories = new HashSet<>();
+
+    public Game(Long id, String name, Float price, String description, Instant date, Short ageGroup) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.date = date;
+        this.ageGroup = ageGroup;
     }
 
 }

@@ -5,7 +5,7 @@ import com.mevy.gamesapi.entities.User;
 public record UserCreateDTO(String username, String password, String email) {
     
     public User toUser() {
-        User user = new User(null, username, email, password);
+        User user = new User(null, username, password, email);
         return user;
     }
 
