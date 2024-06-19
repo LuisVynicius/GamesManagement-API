@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,12 +45,12 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true, updatable = false)
     private String email;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         joinColumns        = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "game_id")
     )
-    
     private Set<Game> games = new HashSet<>();
 
     public User(Long id, String username, String password, String email) {
