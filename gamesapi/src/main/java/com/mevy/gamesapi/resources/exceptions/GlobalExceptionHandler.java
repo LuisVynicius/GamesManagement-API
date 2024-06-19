@@ -2,6 +2,8 @@ package com.mevy.gamesapi.resources.exceptions;
 
 import java.time.Instant;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,9 @@ import com.mevy.gamesapi.services.exceptions.ResourceNotFound;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     
+    @Value("${server.error.include-exception}")
+    private boolean printStackTrace;
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> uncaughtExceptionHandler(Exception e, WebRequest request) {
         return buildErrorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -32,6 +37,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     private ResponseEntity<Object> buildErrorResponse(Exception e, HttpStatus status, String message) {
         ErrorResponse error = new ErrorResponse(Instant.now(), status.value(), message);
+        if (printStackTrace) {
+            error.setStackTrace(ExceptionUtils.getStackTrace(e));
+        }
         return ResponseEntity.status(status).body(error);
     }
 
