@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional(readOnly = true)
     public List<User> findAll() {
         List<User> users = userRepository.findAll();
@@ -35,6 +39,7 @@ public class UserService {
 
     public User create(User user) {
         try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user = userRepository.save(user);
             return user;
         } catch (DataIntegrityViolationException e) {
