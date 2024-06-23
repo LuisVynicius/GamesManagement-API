@@ -36,7 +36,7 @@ public class Game implements Serializable {
     @Column(nullable = false, unique = true, updatable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 75)
+    @Column(nullable = false, unique = true, length = 25)
     private String name;
 
     @Column(nullable = false)
@@ -52,6 +52,8 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private Short ageGroup;
 
+    private Boolean disabled;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "games")
     private Set<User> users = new HashSet<>();
@@ -60,13 +62,14 @@ public class Game implements Serializable {
     @ManyToMany
     private Set<Category> categories = new HashSet<>();
 
-    public Game(Long id, String name, Float price, String description, Instant date, Short ageGroup) {
+    public Game(Long id, String name, Float price, String description, Instant date, Short ageGroup, Boolean disabled) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.date = date;
         this.ageGroup = ageGroup;
+        this.disabled = disabled;
     }
 
 }

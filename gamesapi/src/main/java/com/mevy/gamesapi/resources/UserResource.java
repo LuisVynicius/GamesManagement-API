@@ -20,6 +20,8 @@ import com.mevy.gamesapi.entities.dto.UserCreateDTO;
 import com.mevy.gamesapi.entities.dto.UserUpdateDTO;
 import com.mevy.gamesapi.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserResource {
@@ -41,7 +43,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO userCreateDTO) {
         User user = userService.create(userCreateDTO.toUser());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -54,7 +56,7 @@ public class UserResource {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
         User user = userUpdateDTO.toUser();
         userService.update(user);
         return ResponseEntity.noContent().build();

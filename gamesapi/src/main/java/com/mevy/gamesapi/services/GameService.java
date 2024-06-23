@@ -59,7 +59,7 @@ public class GameService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFound(Game.class, newGame.getId());
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseIntegrityException("Name already in use. ");
+            throw new DatabaseIntegrityException("Game name already in use. ");
         }
     }
 
@@ -68,6 +68,7 @@ public class GameService {
         game.setDescription((Objects.nonNull(newGame.getDescription())) ? newGame.getDescription() : game.getDescription());
         game.setAgeGroup   ((Objects.nonNull(newGame.getAgeGroup()))    ? newGame.getAgeGroup()    : game.getAgeGroup());
         game.setPrice      ((Objects.nonNull(newGame.getPrice()))       ? newGame.getPrice()       : game.getPrice());
+        game.setDisabled   ((Objects.nonNull(newGame.getDisabled()))    ? newGame.getDisabled()    : game.getDisabled());
     }
 
 }

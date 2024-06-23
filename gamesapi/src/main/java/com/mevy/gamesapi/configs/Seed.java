@@ -26,7 +26,7 @@ public class Seed implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         User user = userRepository.save(new User(null, "User01", "Password01", "Email01"));
-        Game game = gameRepository.save(new Game(null, "Game01", 150.00f, "Description01", Instant.now(), (short)16));
+        Game game = gameRepository.save(new Game(null, "Game01", 150.00f, "Description01", Instant.now(), (short)16, true));
         Category category = categoryRepository.save(new Category(null, "Category01"));
         
         user.getGames().add(game);

@@ -20,6 +20,8 @@ import com.mevy.gamesapi.entities.dto.GameCreateDTO;
 import com.mevy.gamesapi.entities.dto.GameUpdateDTO;
 import com.mevy.gamesapi.services.GameService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/game")
 public class GameResource {
@@ -40,7 +42,7 @@ public class GameResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody GameCreateDTO gameCreateDTO) {
+    public ResponseEntity<Void> create(@RequestBody @Valid GameCreateDTO gameCreateDTO) {
         Game game = gameService.create(gameCreateDTO.toGame());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(game.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -53,7 +55,7 @@ public class GameResource {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody GameUpdateDTO gameUpdateDTO) {
+    public ResponseEntity<Void> update(@RequestBody @Valid GameUpdateDTO gameUpdateDTO) {
         Game game = gameUpdateDTO.toGame();
         gameService.update(game);
         return ResponseEntity.noContent().build();

@@ -43,7 +43,7 @@ public class UserService {
             user = userRepository.save(user);
             return user;
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseIntegrityException("Email already in use. ");
+            throw new DatabaseIntegrityException("Email or Username already in use. ");
         }
     }
 
@@ -63,6 +63,8 @@ public class UserService {
             userRepository.save(user);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFound(User.class, newUser.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseIntegrityException("Username already in use. ");
         }
     }
 

@@ -19,6 +19,8 @@ import com.mevy.gamesapi.entities.Category;
 import com.mevy.gamesapi.entities.dto.CategoryCreateDTO;
 import com.mevy.gamesapi.services.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryResource {
@@ -33,14 +35,14 @@ public class CategoryResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CategoryCreateDTO categoryCreateDTO) {
+    public ResponseEntity<Void> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
         Category category = categoryService.create(categoryCreateDTO.toCategory());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Category category) {
+    public ResponseEntity<Void> update(@RequestBody @Valid Category category) {
         categoryService.update(category);
         return ResponseEntity.noContent().build();
     }
