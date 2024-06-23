@@ -2,6 +2,8 @@ package com.mevy.gamesapi.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.gamesapi.entities.User;
+import com.mevy.gamesapi.entities.enums.ProfileEnum;
 import com.mevy.gamesapi.repositories.UserRepository;
 import com.mevy.gamesapi.services.exceptions.DatabaseIntegrityException;
 import com.mevy.gamesapi.services.exceptions.ResourceNotFound;
@@ -40,7 +43,9 @@ public class UserService {
     public User create(User user) {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
             user = userRepository.save(user);
+            user.getProfiles().forEach(x -> System.out.println(x));
             return user;
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseIntegrityException("Email or Username already in use. ");

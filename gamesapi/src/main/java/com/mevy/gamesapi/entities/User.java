@@ -3,11 +3,16 @@ package com.mevy.gamesapi.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mevy.gamesapi.entities.enums.ProfileEnum;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,11 +58,24 @@ public class User implements Serializable {
     )
     private Set<Game> games = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_profile")
+    @Column(name = "profile", nullable = false)
+    private Set<Integer> profiles = new HashSet<>();
+
     public User(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public Set<ProfileEnum> getProfiles() {
+        return profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(ProfileEnum profileEnum) {
+        profiles.add(profileEnum.getCode());
     }
     
 }

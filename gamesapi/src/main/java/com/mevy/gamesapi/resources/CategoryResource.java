@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mevy.gamesapi.entities.Category;
-import com.mevy.gamesapi.entities.dto.CategoryCreateDTO;
+import com.mevy.gamesapi.entities.dtos.CategoryCreateDTO;
 import com.mevy.gamesapi.services.CategoryService;
 
 import jakarta.validation.Valid;

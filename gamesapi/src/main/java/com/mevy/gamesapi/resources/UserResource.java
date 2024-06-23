@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mevy.gamesapi.entities.User;
-import com.mevy.gamesapi.entities.dto.UserCreateDTO;
-import com.mevy.gamesapi.entities.dto.UserUpdateDTO;
+import com.mevy.gamesapi.entities.dtos.UserCreateDTO;
+import com.mevy.gamesapi.entities.dtos.UserUpdateDTO;
 import com.mevy.gamesapi.services.UserService;
 
 import jakarta.validation.Valid;

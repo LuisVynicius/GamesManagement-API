@@ -1,4 +1,4 @@
-package com.mevy.gamesapi.entities.dto;
+package com.mevy.gamesapi.entities.dtos;
 
 import java.time.Instant;
 
