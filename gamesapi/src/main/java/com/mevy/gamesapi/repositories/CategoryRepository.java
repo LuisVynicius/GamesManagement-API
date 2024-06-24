@@ -6,4 +6,6 @@ import com.mevy.gamesapi.entities.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>{
     
+    Boolean existsByName(String name);
+
 }

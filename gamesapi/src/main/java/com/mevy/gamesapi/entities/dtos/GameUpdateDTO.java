@@ -1,7 +1,5 @@
 package com.mevy.gamesapi.entities.dtos;
 
-import com.mevy.gamesapi.entities.Game;
-
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,10 +40,5 @@ public record GameUpdateDTO(
 
         Boolean disabled
     ) {
-
-    public Game toGame() {
-        Game game = new Game(id, name, price, description, null, ageGroup, disabled);
-        return game;
-    }
     
 }

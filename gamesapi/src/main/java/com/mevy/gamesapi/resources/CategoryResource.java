@@ -36,7 +36,8 @@ public class CategoryResource {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
-        Category category = categoryService.create(categoryCreateDTO.toCategory());
+        Category category = categoryService.fromDTO(categoryCreateDTO);
+        category = categoryService.create(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

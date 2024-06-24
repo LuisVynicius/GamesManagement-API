@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.gamesapi.entities.Game;
+import com.mevy.gamesapi.entities.dtos.GameCreateDTO;
+import com.mevy.gamesapi.entities.dtos.GameUpdateDTO;
 import com.mevy.gamesapi.repositories.GameRepository;
 import com.mevy.gamesapi.services.exceptions.DatabaseIntegrityException;
 import com.mevy.gamesapi.services.exceptions.ResourceNotFound;
@@ -34,12 +36,16 @@ public class GameService {
     }
 
     public Game create(Game game) {
-        try {
-            game = gameRepository.save(game);
-            return game;
-        } catch (DataIntegrityViolationException e) {
+        if (gameRepository.existsByName(game.getName())) {
             throw new DatabaseIntegrityException("Game name already in use. ");
         }
+
+        if (Objects.isNull(game.getDisabled())) {
+            game.setDisabled(false);
+        }
+
+        game = gameRepository.save(game);
+        return game;
     }
 
     public void delete(Long id) {
@@ -69,6 +75,32 @@ public class GameService {
         game.setAgeGroup   ((Objects.nonNull(newGame.getAgeGroup()))    ? newGame.getAgeGroup()    : game.getAgeGroup());
         game.setPrice      ((Objects.nonNull(newGame.getPrice()))       ? newGame.getPrice()       : game.getPrice());
         game.setDisabled   ((Objects.nonNull(newGame.getDisabled()))    ? newGame.getDisabled()    : game.getDisabled());
+    }
+
+    public Game fromDTO(GameCreateDTO gameCreateDTO) {
+        Game game = new Game(
+                null,
+                gameCreateDTO.name(),
+                gameCreateDTO.price(),
+                gameCreateDTO.description(),
+                gameCreateDTO.date(),
+                gameCreateDTO.ageGroup(),
+                gameCreateDTO.disabled()
+        );
+        return game;
+    }
+
+    public Game fromDTO(GameUpdateDTO gameUpdateDTO) {
+        Game game = new Game(
+                gameUpdateDTO.id(),
+                gameUpdateDTO.name(),
+                gameUpdateDTO.price(),
+                gameUpdateDTO.description(),
+                null,
+                gameUpdateDTO.ageGroup(),
+                gameUpdateDTO.disabled()
+        );
+        return game;
     }
 
 }

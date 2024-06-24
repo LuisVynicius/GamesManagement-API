@@ -1,7 +1,5 @@
 package com.mevy.gamesapi.entities.dtos;
 
-import com.mevy.gamesapi.entities.User;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,10 +25,5 @@ public record UserUpdateDTO(
         )
         String password
     ) {
-    
-    public User toUser() {
-        User user = new User(id, username, password, null);
-        return user;
-    }
 
 }

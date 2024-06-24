@@ -2,8 +2,6 @@ package com.mevy.gamesapi.entities.dtos;
 
 import java.time.Instant;
 
-import com.mevy.gamesapi.entities.Game;
-
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,10 +40,5 @@ public record GameCreateDTO(
 
         Boolean disabled
     ) {
-
-    public Game toGame() {
-        Game game = new Game(null, name, price, description, date, ageGroup, disabled);
-        return game;
-    }
 
 }

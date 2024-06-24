@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.gamesapi.entities.User;
+import com.mevy.gamesapi.entities.dtos.UserCreateDTO;
+import com.mevy.gamesapi.entities.dtos.UserUpdateDTO;
 import com.mevy.gamesapi.entities.enums.ProfileEnum;
 import com.mevy.gamesapi.repositories.UserRepository;
 import com.mevy.gamesapi.services.exceptions.DatabaseIntegrityException;
@@ -41,15 +43,13 @@ public class UserService {
     }
 
     public User create(User user) {
-        try {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
-            user = userRepository.save(user);
-            user.getProfiles().forEach(x -> System.out.println(x));
-            return user;
-        } catch (DataIntegrityViolationException e) {
+        if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail())) {
             throw new DatabaseIntegrityException("Email or Username already in use. ");
         }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
+        user = userRepository.save(user);
+        return user;
     }
 
     public void delete(Long id) {
@@ -75,7 +75,27 @@ public class UserService {
 
     private void updateData(User user, User newUser) {
         user.setUsername((Objects.nonNull(newUser.getUsername())) ? newUser.getUsername() : user.getUsername());
-        user.setPassword((Objects.nonNull(newUser.getPassword())) ? newUser.getPassword() : user.getPassword());
+        user.setPassword((Objects.nonNull(newUser.getPassword())) ? bCryptPasswordEncoder.encode(newUser.getPassword()) : user.getPassword());
+    }
+
+    public User fromDTO(UserCreateDTO userCreateDTO) {
+        User user = new User(
+                    null,
+                    userCreateDTO.username(),
+                    userCreateDTO.password(),
+                    userCreateDTO.email()
+                );
+        return user;
+    }
+
+    public User FromDTO(UserUpdateDTO userUpdateDTO) {
+        User user = new User(
+                   userUpdateDTO.id(),
+                   userUpdateDTO.username(),
+                   userUpdateDTO.password(),
+                   null
+                );
+        return user;
     }
 
 }

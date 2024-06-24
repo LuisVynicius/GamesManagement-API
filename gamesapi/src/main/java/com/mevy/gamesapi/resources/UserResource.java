@@ -44,7 +44,8 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO userCreateDTO) {
-        User user = userService.create(userCreateDTO.toUser());
+        User user = userService.fromDTO(userCreateDTO);
+        user = userService.create(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -57,7 +58,7 @@ public class UserResource {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
-        User user = userUpdateDTO.toUser();
+        User user = userService.FromDTO(userUpdateDTO);
         userService.update(user);
         return ResponseEntity.noContent().build();
     }

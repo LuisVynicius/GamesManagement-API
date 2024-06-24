@@ -43,7 +43,8 @@ public class GameResource {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid GameCreateDTO gameCreateDTO) {
-        Game game = gameService.create(gameCreateDTO.toGame());
+        Game game = gameService.fromDTO(gameCreateDTO);
+        game = gameService.create(game);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(game.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -56,7 +57,7 @@ public class GameResource {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid GameUpdateDTO gameUpdateDTO) {
-        Game game = gameUpdateDTO.toGame();
+        Game game = gameService.fromDTO(gameUpdateDTO);
         gameService.update(game);
         return ResponseEntity.noContent().build();
     }

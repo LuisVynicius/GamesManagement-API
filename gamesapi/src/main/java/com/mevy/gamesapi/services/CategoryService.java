@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.gamesapi.entities.Category;
+import com.mevy.gamesapi.entities.dtos.CategoryCreateDTO;
 import com.mevy.gamesapi.repositories.CategoryRepository;
 import com.mevy.gamesapi.services.exceptions.DatabaseIntegrityException;
 import com.mevy.gamesapi.services.exceptions.ResourceNotFound;
@@ -28,12 +29,11 @@ public class CategoryService {
     }
 
     public Category create(Category category) {
-        try {
-            category = categoryRepository.save(category);
-            return category;
-        } catch (DataIntegrityViolationException e) {
+        if (categoryRepository.existsByName(category.getName())) {
             throw new DatabaseIntegrityException("Category already exists. ");
         }
+        category = categoryRepository.save(category);
+        return category;
     }
 
     public void delete(Long id) {
@@ -59,6 +59,14 @@ public class CategoryService {
 
     private void updateData(Category category, Category newCategory) {
         category.setName((Objects.nonNull(newCategory.getName())) ? newCategory.getName() : category.getName());
+    }
+
+    public Category fromDTO(CategoryCreateDTO categoryCreateDTO) {
+        Category category = new Category(
+                null,
+                categoryCreateDTO.name()
+            );
+        return category;
     }
 
 }
