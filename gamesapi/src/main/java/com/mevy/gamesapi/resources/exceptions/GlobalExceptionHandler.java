@@ -76,12 +76,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     private ResponseEntity<Object> buildErrorResponse(Exception e, HttpStatus status) {
         return buildErrorResponse(e, status, e.getMessage());
     }
-
+    
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
-        Integer status = HttpStatus.FORBIDDEN.value();
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        Integer status = HttpStatus.UNAUTHORIZED.value();
+        response.setStatus(status);
         response.setContentType("Application/json");
         ErrorResponse errorResponse = new ErrorResponse(Instant.now(), status, "Email or Password are invalid. ");
         response.getWriter().append(errorResponse.toJson());
