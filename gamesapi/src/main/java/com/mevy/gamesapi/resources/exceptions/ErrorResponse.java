@@ -41,4 +41,8 @@ public class ErrorResponse implements Serializable {
         this.errors.add(new ValidationError(field, message));
     }
 
+    public String toJson() {
+        return String.format("{\"status\" : %d,\n\"message\" : \"%s\"}",status, message);
+    }
+    
 }

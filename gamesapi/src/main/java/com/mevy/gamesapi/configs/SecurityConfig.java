@@ -12,26 +12,26 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.mevy.gamesapi.security.JWTAuthenticationFilter;
 import com.mevy.gamesapi.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     
-    // private AuthenticationManager authenticationManager;
-
-    // @Autowired
-    // private UserDetailsService userDetailsService;
+     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private 
-    JWTUtil jwtUtil;
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-        // authenticationManager = authenticationManagerBuilder.build();
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        authenticationManager = authenticationManagerBuilder.build();
 
         return http
                     .csrf(csrf -> csrf.disable())
@@ -41,6 +41,8 @@ public class SecurityConfig {
                     .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                     )
+                    .authenticationManager(authenticationManager)
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
                     .build();
     }
 
