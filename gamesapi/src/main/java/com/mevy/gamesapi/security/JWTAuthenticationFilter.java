@@ -1,6 +1,5 @@
 package com.mevy.gamesapi.security;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -40,8 +39,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return authentication;
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (AuthenticationException e) {
-            throw e;
         }
     }
 
