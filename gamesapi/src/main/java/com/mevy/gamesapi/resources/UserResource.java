@@ -30,20 +30,21 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok().body(users);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.ok().body(user);
-
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO userCreateDTO) {
         User user = userService.fromDTO(userCreateDTO);
@@ -52,12 +53,14 @@ public class UserResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
         User user = userService.FromDTO(userUpdateDTO);

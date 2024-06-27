@@ -9,7 +9,8 @@ import lombok.Getter;
 @Getter
 public enum ProfileEnum {
         ADMIN(1, "ROLE_ADMIN"),
-        USER(2, "ROLE_USER")
+        USER(2, "ROLE_USER"),
+        GAME_DEVELOPER(3, "ROLE_GAME_DEVELOPER")
     ;
 
     private int code;

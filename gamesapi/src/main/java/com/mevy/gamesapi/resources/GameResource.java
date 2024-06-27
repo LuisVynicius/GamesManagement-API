@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,18 +30,21 @@ public class GameResource {
     @Autowired
     private GameService gameService;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<Game>> findAll() {
         List<Game> games = gameService.findAll();
         return ResponseEntity.ok().body(games);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Game> findById(@PathVariable Long id) {
         Game game = gameService.findById(id);
         return ResponseEntity.ok().body(game);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_GAME_DEVELOPER')")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid GameCreateDTO gameCreateDTO) {
         Game game = gameService.fromDTO(gameCreateDTO);
@@ -49,12 +53,14 @@ public class GameResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         gameService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid GameUpdateDTO gameUpdateDTO) {
         Game game = gameService.fromDTO(gameUpdateDTO);

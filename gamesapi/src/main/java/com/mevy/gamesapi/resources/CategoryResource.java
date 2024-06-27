@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +29,14 @@ public class CategoryResource {
     @Autowired
     private CategoryService categoryService;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {
         List<Category> categories = categoryService.findAll();
         return ResponseEntity.ok().body(categories);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
         Category category = categoryService.fromDTO(categoryCreateDTO);
@@ -42,12 +45,14 @@ public class CategoryResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody @Valid Category category) {
         categoryService.update(category);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoryService.delete(id);

@@ -3,6 +3,7 @@ package com.mevy.gamesapi.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,7 +23,12 @@ import com.mevy.gamesapi.security.JWTUtil;
 @EnableMethodSecurity
 public class SecurityConfig {
     
-     private AuthenticationManager authenticationManager;
+    private static final String[] PUBLIC_MATCHERS_POST = {
+        "/user",
+        "/login"
+    };
+
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -42,7 +48,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     )
                     .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                         .anyRequest().authenticated()
                     )
                     .authenticationManager(authenticationManager)

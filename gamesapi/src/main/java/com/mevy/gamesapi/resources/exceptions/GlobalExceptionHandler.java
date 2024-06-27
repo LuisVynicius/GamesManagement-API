@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.validation.FieldError;
@@ -63,6 +64,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(DatabaseIntegrityException.class)
     public ResponseEntity<Object> databaseIntegrityException(DatabaseIntegrityException e, WebRequest request) {
         return buildErrorResponse(e, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<Object> accessDeniedException(AuthorizationDeniedException e, WebRequest request) {
+        return buildErrorResponse(e, HttpStatus.FORBIDDEN);
     }
 
     private ResponseEntity<Object> buildErrorResponse(Exception e, HttpStatus status, String message) {
