@@ -24,7 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("Username not found. Username: " + username);
         }
-        return new UserSpringSecurity(user.getId(), user.getUsername(), user.getPassword(), user.getProfiles());
+        return new UserSpringSecurity(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getProfiles()
+            );
     }
     
 }

@@ -22,12 +22,19 @@ public class UserSpringSecurity implements UserDetails{
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSpringSecurity(Long id, String username, String password,
-            Set<ProfileEnum> authorities) {
+    public UserSpringSecurity(
+            Long id,
+            String username,
+            String password,
+            Set<ProfileEnum> authorities
+    ) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.authorities = authorities.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
+        this.authorities = authorities
+                                    .stream()
+                                    .map(x -> new SimpleGrantedAuthority(x.getDescription()))
+                                    .collect(Collectors.toList());
     }
     
     @Override

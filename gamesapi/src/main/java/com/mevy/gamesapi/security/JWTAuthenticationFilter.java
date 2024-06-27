@@ -30,11 +30,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
+    public Authentication attemptAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws AuthenticationException {
         try {
             User userCredentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
         
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(), userCredentials.getPassword(), new ArrayList<>());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userCredentials.getUsername(),
+                    userCredentials.getPassword(),
+                    new ArrayList<>()
+                );
             Authentication authentication = this.authenticationManager.authenticate(authToken);
             return authentication;
         } catch (IOException e) {
@@ -43,7 +50,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain,
+            Authentication authentication
+    ) throws IOException, ServletException {
         String username = ((UserSpringSecurity) authentication.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
         response.addHeader("Authorization", "Bearer " + token);

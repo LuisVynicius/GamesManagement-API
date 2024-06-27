@@ -30,8 +30,18 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
+    public Game findByName(String name) {
+        Game game = gameRepository.findByName(name).orElseThrow(
+            () -> new ResourceNotFound(Game.class, name)
+        );
+        return game;
+    }
+
+    @Transactional(readOnly = true)
     public Game findById(Long id) {
-        Game game = gameRepository.findById(id).orElseThrow(() -> new ResourceNotFound(Game.class, id));
+        Game game = gameRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFound(Game.class, id)
+        );
         return game;
     }
 

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mevy.gamesapi.entities.Category;
 import com.mevy.gamesapi.entities.dtos.CategoryCreateDTO;
+import com.mevy.gamesapi.entities.dtos.CategoryUpdateDTO;
 import com.mevy.gamesapi.services.CategoryService;
 
 import jakarta.validation.Valid;
@@ -41,13 +42,18 @@ public class CategoryResource {
     public ResponseEntity<Void> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
         Category category = categoryService.fromDTO(categoryCreateDTO);
         category = categoryService.create(category);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(category.getId())
+                        .toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody @Valid Category category) {
+    public ResponseEntity<Void> update(@RequestBody @Valid CategoryUpdateDTO categoryUpdateDTO) {
+        Category category = categoryService.fromDTO(categoryUpdateDTO);
         categoryService.update(category);
         return ResponseEntity.noContent().build();
     }

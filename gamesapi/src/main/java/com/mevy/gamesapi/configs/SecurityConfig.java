@@ -38,8 +38,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                        .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder
+                        .userDetailsService(userDetailsService)
+                        .passwordEncoder(bCryptPasswordEncoder());
         authenticationManager = authenticationManagerBuilder.build();
 
         return http

@@ -52,26 +52,42 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> uncaughtExceptionHandler(Exception e, WebRequest request) {
+    public ResponseEntity<Object> uncaughtExceptionHandler(
+            Exception e,
+            WebRequest request
+    ) {
         return buildErrorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResourceNotFound.class)
-    public ResponseEntity<Object> resourceNotFoundHandler(ResourceNotFound e, WebRequest request) {
+    public ResponseEntity<Object> resourceNotFoundHandler(
+            ResourceNotFound e,
+            WebRequest request
+    ) {
         return buildErrorResponse(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DatabaseIntegrityException.class)
-    public ResponseEntity<Object> databaseIntegrityException(DatabaseIntegrityException e, WebRequest request) {
+    public ResponseEntity<Object> databaseIntegrityException(
+            DatabaseIntegrityException e,
+            WebRequest request
+    ) {
         return buildErrorResponse(e, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<Object> accessDeniedException(AuthorizationDeniedException e, WebRequest request) {
+    public ResponseEntity<Object> accessDeniedException(
+            AuthorizationDeniedException e,
+            WebRequest request
+    ) {
         return buildErrorResponse(e, HttpStatus.FORBIDDEN);
     }
 
-    private ResponseEntity<Object> buildErrorResponse(Exception e, HttpStatus status, String message) {
+    private ResponseEntity<Object> buildErrorResponse(
+            Exception e,
+            HttpStatus status,
+            String message
+    ) {
         ErrorResponse error = new ErrorResponse(Instant.now(), status.value(), message);
         if (printStackTrace) {
             error.setStackTrace(ExceptionUtils.getStackTrace(e));
@@ -79,13 +95,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
         return ResponseEntity.status(status).body(error);
     }
 
-    private ResponseEntity<Object> buildErrorResponse(Exception e, HttpStatus status) {
+    private ResponseEntity<Object> buildErrorResponse(
+            Exception e,
+            HttpStatus status
+    ) {
         return buildErrorResponse(e, status, e.getMessage());
     }
     
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException exception
+    ) throws IOException, ServletException {
         Integer status = HttpStatus.UNAUTHORIZED.value();
         response.setStatus(status);
         response.setContentType("Application/json");

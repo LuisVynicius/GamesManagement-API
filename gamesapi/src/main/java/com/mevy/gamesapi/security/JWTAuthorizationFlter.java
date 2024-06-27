@@ -20,14 +20,22 @@ public class JWTAuthorizationFlter extends BasicAuthenticationFilter {
     private JWTUtil jwtUtil;
     private UserDetailsService userdetailsService;
     
-    public JWTAuthorizationFlter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JWTAuthorizationFlter(
+            AuthenticationManager authenticationManager,
+            JWTUtil jwtUtil,
+            UserDetailsService userDetailsService
+    ) {
         super(authenticationManager);
         this.jwtUtil = jwtUtil;
         this.userdetailsService = userDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws IOException, ServletException {
         String authorizationHeader = request.getHeader("Authorization");
         if (Objects.nonNull(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
@@ -43,7 +51,11 @@ public class JWTAuthorizationFlter extends BasicAuthenticationFilter {
         if (jwtUtil.isValidToken(token)) {
             String username = jwtUtil.getUsername(token);
             UserDetails user = userdetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    user.getAuthorities()
+                );
             return authenticatedUser;
         }
         return null;

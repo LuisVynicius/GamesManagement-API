@@ -33,10 +33,18 @@ public class Game implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(
+        nullable = false,
+        unique = true,
+        updatable = false
+    )
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 25)
+    @Column(
+        nullable = false,
+        unique = true,
+        length = 25
+    )
     private String name;
 
     @Column(nullable = false)
@@ -45,8 +53,15 @@ public class Game implements Serializable {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false, updatable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC", shape = JsonFormat.Shape.STRING)
+    @Column(
+        nullable = false,
+        updatable = false
+    )
+    @JsonFormat(
+        pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        timezone = "UTC",
+        shape = JsonFormat.Shape.STRING
+    )
     private Instant date;
 
     @Column(nullable = false)
@@ -62,7 +77,15 @@ public class Game implements Serializable {
     @ManyToMany
     private Set<Category> categories = new HashSet<>();
 
-    public Game(Long id, String name, Float price, String description, Instant date, Short ageGroup, Boolean disabled) {
+    public Game(
+            Long id,
+            String name,
+            Float price,
+            String description,
+            Instant date,
+            Short ageGroup,
+            Boolean disabled
+    ) {
         this.id = id;
         this.name = name;
         this.price = price;

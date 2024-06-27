@@ -18,7 +18,12 @@ import lombok.Setter;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse implements Serializable {
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC", shape = JsonFormat.Shape.STRING)
+
+    @JsonFormat(
+        pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        timezone = "UTC",
+        shape = JsonFormat.Shape.STRING
+    )
     private final Instant timestamp;
     private final int status;
     private final String message;
@@ -42,7 +47,7 @@ public class ErrorResponse implements Serializable {
     }
 
     public String toJson() {
-        return String.format("{\"status\" : %d,\n\"message\" : \"%s\"}",status, message);
+        return String.format("{\"status\" : %d,\n\"message\" : \"%s\"}", status, message);
     }
     
 }

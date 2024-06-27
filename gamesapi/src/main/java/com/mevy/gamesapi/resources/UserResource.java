@@ -44,27 +44,45 @@ public class UserResource {
         return ResponseEntity.ok().body(user);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/current")
+    public ResponseEntity<User> getCurrentUser() {
+        User user = userService.getCurrentUser();
+        return ResponseEntity.ok().body(user);
+    }
+
     @PreAuthorize("permitAll()")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid UserCreateDTO userCreateDTO) {
         User user = userService.fromDTO(userCreateDTO);
         user = userService.create(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(user.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{îd}")
+                        .buildAndExpand(user.getId())
+                        .toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
-        User user = userService.FromDTO(userUpdateDTO);
-        userService.update(user);
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/current")
+    public ResponseEntity<Void> addDeleteDateToCurrentUser() {
+        userService.addDeleteDateToCurrentUser();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/current")
+    public ResponseEntity<Void> updateCurrentUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        User user = userService.fromDTO(userUpdateDTO);
+        userService.updateCurrentUser(user);
         return ResponseEntity.noContent().build();
     }
 

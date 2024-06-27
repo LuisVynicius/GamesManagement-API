@@ -31,19 +31,45 @@ public class Seed implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        User user = userService.create(
+            new User(
+                null,
+                "User",
+                "Password",
+                "EmailUser"
+            )
+        );
+        User admin = new User(
+                null,
+                "Admin", 
+                "Password", 
+                "EmailAdmin"
+            );
+        Game game = gameRepository.save(
+            new Game(
+                null, "Game01", 
+                150.00f, 
+                "Description01", 
+                Instant.now(), 
+                (short)16, 
+                false
+            )
+        );
+        Category category = categoryRepository.save(
+            new Category(
+                null,
+                "Category01"
+            )
+        );
         
-        User user = userService.create(new User(null, "User", "Password", "EmailUser"));
-        User admin = new User(null, "Admin", "Password", "EmailAdmin");
         admin = userService.create(admin);
         admin.addProfile(ProfileEnum.ADMIN);
         admin.addProfile(ProfileEnum.USER);
         admin = userRepository.save(admin);
-        Game game = gameRepository.save(new Game(null, "Game01", 150.00f, "Description01", Instant.now(), (short)16, false));
-        Category category = categoryRepository.save(new Category(null, "Category01"));
         
         user.getGames().add(game);
         userRepository.save(user);
-
+        
         game.getCategories().add(category);
         gameRepository.save(game);
     }

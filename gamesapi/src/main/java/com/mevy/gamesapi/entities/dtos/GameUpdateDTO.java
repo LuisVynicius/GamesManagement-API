@@ -27,7 +27,7 @@ public record GameUpdateDTO(
         Float price,
         
         @Size(
-            message = "Description must have at least 255 characters. ",
+            message = "Description must not exceed 255 characters. ",
             max = 255
         )
         String description,

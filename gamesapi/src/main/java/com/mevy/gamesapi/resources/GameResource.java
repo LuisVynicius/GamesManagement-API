@@ -44,12 +44,23 @@ public class GameResource {
         return ResponseEntity.ok().body(game);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Game> findByName(@PathVariable String name) {
+        Game game = gameService.findByName(name);
+        return ResponseEntity.ok().body(game);
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_GAME_DEVELOPER')")
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid GameCreateDTO gameCreateDTO) {
         Game game = gameService.fromDTO(gameCreateDTO);
         game = gameService.create(game);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{îd}").buildAndExpand(game.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{îd}")
+                        .buildAndExpand(game.getId())
+                        .toUri();
         return ResponseEntity.created(uri).build();
     }
 

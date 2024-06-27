@@ -23,7 +23,12 @@ public class JWTUtil {
 
     public String generateToken(String username) {
         SecretKey key = getKeyBySecret();
-        return Jwts.builder().subject(username).expiration(new Date(System.currentTimeMillis() + expiration)).signWith(key).compact();
+        return Jwts
+                    .builder()
+                    .subject(username)
+                    .expiration(new Date(System.currentTimeMillis() + expiration))
+                    .signWith(key)
+                    .compact();
     }
 
     private SecretKey getKeyBySecret() {
@@ -55,10 +60,14 @@ public class JWTUtil {
     private Claims getClaims(String token) {
         SecretKey key = getKeyBySecret();
         try {
-            return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+            return Jwts
+                        .parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
         } catch (Exception e) {
             return null;
         }
     }
-
 }

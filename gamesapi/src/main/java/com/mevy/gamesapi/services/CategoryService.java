@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mevy.gamesapi.entities.Category;
 import com.mevy.gamesapi.entities.dtos.CategoryCreateDTO;
+import com.mevy.gamesapi.entities.dtos.CategoryUpdateDTO;
 import com.mevy.gamesapi.repositories.CategoryRepository;
 import com.mevy.gamesapi.services.exceptions.DatabaseIntegrityException;
 import com.mevy.gamesapi.services.exceptions.ResourceNotFound;
@@ -37,7 +38,9 @@ public class CategoryService {
     }
 
     public void delete(Long id) {
-        categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFound(Category.class, id));
+        categoryRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFound(Category.class, id)
+        );
         try {
             categoryRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
@@ -65,6 +68,14 @@ public class CategoryService {
         Category category = new Category(
                 null,
                 categoryCreateDTO.name()
+            );
+        return category;
+    }
+
+    public Category fromDTO(CategoryUpdateDTO categoryUpdateDTO) {
+        Category category = new Category(
+                categoryUpdateDTO.id(),
+                categoryUpdateDTO.name()
             );
         return category;
     }

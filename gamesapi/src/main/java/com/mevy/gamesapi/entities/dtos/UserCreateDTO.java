@@ -21,7 +21,7 @@ public record UserCreateDTO(
         )
         String password,
         
-        @NotBlank(message = "Email must have at least one character. ")
+        @NotBlank(message = "Email must have at least 10 characters. ")
         @Size(
             message = "Email must be valid. ",
             min = 10
