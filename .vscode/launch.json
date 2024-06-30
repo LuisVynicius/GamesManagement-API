@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ErrorResponse",
+            "request": "launch",
+            "mainClass": "com.mevy.gamesapi.resources.exceptions.ErrorResponse",
+            "projectName": "gamesapi"
+        },
+        {
+            "type": "java",
             "name": "GlobalExceptionHandler",
             "request": "launch",
             "mainClass": "com.mevy.gamesapi.resources.exceptions.GlobalExceptionHandler",
