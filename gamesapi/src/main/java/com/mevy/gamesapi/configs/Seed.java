@@ -36,14 +36,20 @@ public class Seed implements CommandLineRunner {
                 null,
                 "User",
                 "Password",
-                "EmailUser"
+                "EmailUser@Gmail.com"
             )
         );
         User admin = new User(
                 null,
                 "Admin", 
                 "Password", 
-                "EmailAdmin"
+                "EmailAdmin@Gmail.com"
+            );
+        User gameDeveloper = new User(
+                null,
+                "GameDeveloper", 
+                "Password", 
+                "EmailGameDeveloper@Gmail.com"
             );
         Game game = gameRepository.save(
             new Game(
@@ -66,6 +72,11 @@ public class Seed implements CommandLineRunner {
         admin.addProfile(ProfileEnum.ADMIN);
         admin.addProfile(ProfileEnum.USER);
         admin = userRepository.save(admin);
+
+        gameDeveloper = userService.create(gameDeveloper);
+        gameDeveloper.addProfile(ProfileEnum.GAME_DEVELOPER);
+        gameDeveloper.addProfile(ProfileEnum.USER);
+        gameDeveloper = userRepository.save(gameDeveloper);
         
         user.getGames().add(game);
         userRepository.save(user);
